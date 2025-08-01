@@ -1,5 +1,5 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:search_engine/home/homescreen.dart';
 import 'authserivce.dart';
 
 class AuthGate extends StatefulWidget {
@@ -11,8 +11,6 @@ class AuthGate extends StatefulWidget {
 
 class _AuthGateState extends State<AuthGate> {
   bool _isLoading = true;
-  final _auth = FirebaseAuth.instance;
-  User? _currentUser;
 
   @override
   void initState() {
@@ -24,7 +22,6 @@ class _AuthGateState extends State<AuthGate> {
     await Authservice().signInAnonymous();
     setState(() {
       _isLoading = false;
-      _currentUser = _auth.currentUser;
     });
   }
 
@@ -32,11 +29,6 @@ class _AuthGateState extends State<AuthGate> {
   Widget build(BuildContext context) {
     return _isLoading
         ? const Center(child: CircularProgressIndicator())
-        : Scaffold(
-            appBar: AppBar(title: const Text("Hello World")),
-            body: Center(
-              child: Text("UID: ${_currentUser?.uid ?? "Not signed in"}"),
-            ),
-          );
+        : Homescreen();
   }
 }

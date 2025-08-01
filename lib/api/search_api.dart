@@ -1,10 +1,9 @@
 import 'package:http/http.dart' as http;
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'dart:convert';
 
 class SearchApi {
   Future<void> checkHealth() async {
-    final baseUrl = dotenv.env['SEARCH_API'];
+    final baseUrl = 'https://searchengine-app.azurewebsites.net';
     final url = Uri.parse('$baseUrl/health');
 
     try {
@@ -24,7 +23,8 @@ class SearchApi {
   Future<List<Map<String, dynamic>>> searchItem(String search) async {
     List<Map<String, dynamic>> items = [];
 
-    final baseUrl = dotenv.env['SEARCH_API'];
+    final baseUrl = 'https://searchengine-app.azurewebsites.net';
+    ;
     final url = Uri.parse('$baseUrl/search?query=$search&top_k=5');
 
     try {
