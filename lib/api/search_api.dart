@@ -1,6 +1,8 @@
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
+import 'package:search_engine/model/item.dart';
+
 class SearchApi {
   Future<void> checkHealth() async {
     final baseUrl = 'https://searchengine-app.azurewebsites.net';
@@ -20,11 +22,10 @@ class SearchApi {
     }
   }
 
-  Future<List<Map<String, dynamic>>> searchItem(String search) async {
-    List<Map<String, dynamic>> items = [];
+  Future<List<Item>> searchItem(String search) async {
+    List<Item> items = [];
 
     final baseUrl = 'https://searchengine-app.azurewebsites.net';
-    ;
     final url = Uri.parse('$baseUrl/search?query=$search&top_k=5');
 
     try {
@@ -34,11 +35,9 @@ class SearchApi {
         final decoded = json.decode(response.body);
 
         if (decoded is List) {
-          // Assuming response is a list of maps
-          items = List<Map<String, dynamic>>.from(decoded);
+          items = decoded.map<Item>((e) => Item.fromJson(e)).toList();
         } else if (decoded is Map<String, dynamic>) {
-          // If it's a map, wrap it in a list
-          items = [decoded];
+          items = [Item.fromJson(decoded)];
         } else {
           print("⚠️ Unexpected response type: ${decoded.runtimeType}");
         }
